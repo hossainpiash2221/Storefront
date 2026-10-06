@@ -6,6 +6,7 @@ import ProductsProvider from '@/components/ProductsProvider';
 import CartProvider from '@/components/CartProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 const body = Figtree({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }) {
           </CartProvider>
         </ProductsProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
+         <SpeedInsights />
       </body>
     </html>
   );
