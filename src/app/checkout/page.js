@@ -80,7 +80,8 @@ export default function CheckoutPage() {
     if (lock.current) return;                                   // blocks double clicks instantly, before React re-renders
     const errs = validate(form); setErrors(errs);
     if (Object.keys(errs).length) { document.getElementById(`f-${Object.keys(errs)[0]}`)?.focus(); return; }
-    if (!quote?.allOk) { setSubmitErr('Some items need your attention. See the notes next to them.'); return; }
+    // if (!quote?.allOk) { setSubmitErr('Some items need your attention. See the notes next to them.'); return; }
+    if (quote && !quote.allOk) { setSubmitErr('Some items need your attention. See the notes next to them.'); return; }
     lock.current = true; setBusy(true); setSubmitErr('');
     try {
       const res = await fetch('/api/order', {
@@ -154,8 +155,8 @@ export default function CheckoutPage() {
             <div className="flex justify-between text-lg font-bold"><dt>Total to pay</dt><dd>{taka(total)}</dd></div>
           </dl>
           {submitErr && <p role="alert" className="mt-4 text-sm font-medium text-madder">{submitErr}</p>}
-          <button type="submit" disabled={busy || !ok} className="mt-5 w-full rounded bg-peacock px-6 py-3.5 font-semibold text-white hover:bg-peacock-dark disabled:cursor-not-allowed disabled:opacity-50">
-            {busy ? 'Placing your order…' : quote ? 'Place order' : 'Checking your cart…'}
+          <button type="submit" disabled={busy || (quote && !quote.allOk)} className="mt-5 w-full rounded bg-peacock px-6 py-3.5 font-semibold text-white hover:bg-peacock-dark disabled:cursor-not-allowed disabled:opacity-50">
+            {busy ? 'Placing your order…' : 'Place order'}
           </button>
           <p className="mt-3 text-xs text-ink/60">Prices, stock and delivery are confirmed by our server when you place the order.</p>
         </aside>

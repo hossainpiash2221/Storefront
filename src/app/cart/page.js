@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 'use client';
 import Link from 'next/link';
 import { useCart } from '@/components/CartProvider';
@@ -9,6 +11,17 @@ import { useStoreConfig, deliveryFor } from '@/lib/store-config';
 export default function CartPage() {
   const { items, ready, subtotal, setQty, remove } = useCart();
   const cfg = useStoreConfig();
+
+  
+  useEffect(() => {
+  if (!ready || !items.length) return;
+  fetch('/api/quote', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: items.map((i) => ({ productId: i.productId, quantity: i.qty, color: i.color || '', size: i.size || '' })) }),
+  }).catch(() => {});
+}, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
   if (!ready) return <div className="mx-auto max-w-4xl px-4 py-16" aria-busy="true"><div className="h-40 animate-pulse rounded bg-mist" /></div>;
   if (!items.length) return (
     <div className="mx-auto max-w-xl px-4 py-24 text-center">
