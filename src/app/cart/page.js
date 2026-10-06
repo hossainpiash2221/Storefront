@@ -1,6 +1,9 @@
+'use client';
+
 import { useEffect } from 'react';
 
-'use client';
+
+
 import Link from 'next/link';
 import { useCart } from '@/components/CartProvider';
 import QuantityStepper from '@/components/QuantityStepper';
@@ -12,7 +15,7 @@ export default function CartPage() {
   const { items, ready, subtotal, setQty, remove } = useCart();
   const cfg = useStoreConfig();
 
-  
+
   useEffect(() => {
   if (!ready || !items.length) return;
   fetch('/api/quote', {
